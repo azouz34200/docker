@@ -1,0 +1,5 @@
+---
+# vars file for docker
+docker_version: 1.13.0
+docker_service: "docker"
+docker_reponame: "docker-repo"

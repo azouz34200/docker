@@ -1,0 +1,13 @@
+---
+# handlers file for docker
+- block:
+  - name: restart docker
+    service:
+      name: "{{ docker_service }}"
+      state: "restarted"
+
+  - name: systemd-daemon-reload
+    command: systemctl daemon-reload
+
+  become: yes
+  become_user: "root"

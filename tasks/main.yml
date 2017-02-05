@@ -1,0 +1,39 @@
+---
+# tasks file for docker
+- block:
+    - name: Ensure docker repository is present
+      template:
+       src: docker.repo
+       dest: /etc/yum.repos.d/docker.repo
+
+    - name: Ensure docker is installed
+      yum:
+       name: "docker-engine-{{ docker_version }}"
+       state: present
+       enablerepo: "{{ docker_reponame }}"
+
+    - name: Ensure systemd file is present
+      template:
+        src: docker.service
+        dest: "/etc/systemd/system/{{ docker_service }}.service"
+      notify:
+        - systemd-daemon-reload
+        - restart docker
+
+    - meta: flush_handlers
+
+    - name: Ensure docker is started
+      service:
+        name: "{{ docker_service }}"
+        enabled: yes
+        state: started
+
+    - name: Ensure vagrant user can run docker commands
+      user:
+       name: vagrant
+       groups: docker
+       append: yes
+      when: docker_vagrant
+
+  become: yes
+  become_user: "root"
