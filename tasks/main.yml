@@ -21,6 +21,12 @@
         - restart docker
 
     - meta: flush_handlers
+    - name: Ensure firewall rules is set to access remote api
+      firewalld:
+       port: "{{ docker_remote_access_port }}/tcp"
+       permanent: true
+       state: enabled
+      when: docker_remote_access
 
     - name: Ensure docker is started
       service:

@@ -2,3 +2,5 @@
 # defaults file for docker
 docker_vagrant: true
 docker_storagedriver: "devicemapper"
+docker_remote_access: false
+docker_remote_access_port: 2375
